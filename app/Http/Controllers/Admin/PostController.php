@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Post;
 use App\Category;
+use App\Tag;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -17,7 +18,8 @@ class PostController extends Controller
         'content' => 'required',
         'published' => 'sometimes|accepted',
         'category_id' => 'nullable|exists:categories,id',
-        'image' => 'nullable|mimes:jpg,jpeg,bmp,png,webp|max:2048'
+        'image' => 'nullable|mimes:jpg,jpeg,bmp,png,webp|max:2048',
+        'tags' => 'nullable|exists:tags,id'
     ];
 
     /**
@@ -41,8 +43,9 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $tags = Tag::all();
 
-        return view('admin.posts.create', compact('categories'));
+        return view('admin.posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -54,6 +57,8 @@ class PostController extends Controller
     public function store(Request $request)
     {   
         $request->validate($this->validation);
+
+        // dd($request->all());
 
         $data = $request->all();
 
@@ -79,7 +84,11 @@ class PostController extends Controller
         $new_post->published = isset($data['published']);
         $new_post->save();
 
-        return redirect()->route('posts.index');
+        if(isset($data['tags'])) {
+            $new_post->tags()->sync($data['tags']);
+        }
+
+        return redirect()->route('posts.show', $new_post->id);
     }
 
     /**

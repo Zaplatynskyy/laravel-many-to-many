@@ -35,6 +35,18 @@
         </div>
 
         <div class="form-group">
+          @foreach ($tags as $tag)
+            <div class="form-check form-check-inline">
+              <input class="form-check-input @error('{{$tag->slug}}') is-invalid @enderror" type="checkbox" id="{{$tag->slug}}" name="tags[]" value="{{$tag->id}}">
+              <label class="form-check-label" for="{{$tag->slug}}">{{$tag->name}}</label>
+            </div>
+            @endforeach
+            @error('tags')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="form-group">
           <label for="image">Immagine</label>
           <input type="file" class="form-control-file @error('category_id') is-invalid @enderror" id="image" name="image">
           @error('image')
