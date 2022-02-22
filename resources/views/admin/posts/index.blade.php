@@ -21,6 +21,7 @@
                                         <h2>{{$post->title}}</h2>
                                         <h5>{{$post->slug}}</h5>
                                     </div>
+
                                     <div class="buttons d-flex justify-content-between align-items-center">
                                         <a href="{{route('posts.show', $post->id)}}">
                                             <button type="button" class="btn btn-success">Visualizza</button>
@@ -37,6 +38,12 @@
                                         </form>
                                     </div>
                                </div>
+
+                               <div class="tags my-3">
+                                    @foreach ($post->tags as $tag)
+                                        <span class="badge rounded-pill bg-success">{{$tag->name}}</span>
+                                    @endforeach
+                                </div>
 
                                @if ($post->image)
                                     <div class="image w-100">
