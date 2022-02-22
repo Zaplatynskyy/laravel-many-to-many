@@ -58,8 +58,6 @@ class PostController extends Controller
     {   
         $request->validate($this->validation);
 
-        // dd($request->all());
-
         $data = $request->all();
 
         $new_post = new Post();
@@ -111,8 +109,9 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $categories = Category::all();
+        $tags = Tag::all();
 
-        return view('admin.posts.edit', compact('post', 'categories'));
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**

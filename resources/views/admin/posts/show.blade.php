@@ -11,6 +11,13 @@
         <strong>Slug :</strong>
         <h5 class="d-inline-block">{{$post->slug}}</h5>
     </div>
+
+    <div class="slug my-2">
+        <strong>Tags :</strong>
+        @foreach ($post->tags as $tag)
+            <span class="badge rounded-pill bg-success">{{$tag->name}}</span>
+        @endforeach
+    </div>
     
     @if ($post->image)
         <div class="image w-50 my-2">
