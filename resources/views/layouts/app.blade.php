@@ -40,6 +40,10 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('categories.index') }}">Categories</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('tags.index') }}">Tags</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

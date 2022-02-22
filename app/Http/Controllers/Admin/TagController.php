@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Tag;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
 
 class TagController extends Controller
 {
@@ -15,7 +16,9 @@ class TagController extends Controller
      */
     public function index()
     {
-        //
+        $tags = Tag::all();
+
+        return view('admin.tags.index', compact('tags'));
     }
 
     /**
@@ -25,7 +28,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.tags.create');
     }
 
     /**
@@ -36,7 +39,18 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:tags|max:50'
+        ]);
+
+        $data = $request->all();
+        
+        $new_tag = new Tag();
+        $new_tag->name = $data['name'];
+        $new_tag->slug = Str::of($data['name'])->slug('-');
+        $new_tag->save();
+
+        return redirect()->route('tags.index');
     }
 
     /**
@@ -47,7 +61,7 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
-        //
+        return view('admin.tags.show', compact('tag'));
     }
 
     /**
@@ -58,7 +72,7 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        //
+        return view('admin.tags.edit', compact('tag'));
     }
 
     /**
@@ -70,7 +84,18 @@ class TagController extends Controller
      */
     public function update(Request $request, Tag $tag)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:categories|max:50'
+        ]);
+
+        $data = $request->all();
+
+        $tag->name = $data['name'];
+        $tag->slug = Str::of($data['name'])->slug('-');
+
+        $tag->save();
+
+        return redirect()->route('tags.index');
     }
 
     /**
@@ -81,6 +106,8 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        //
+        $tag->delete();
+
+        return redirect()->route('tags.index');
     }
 }
