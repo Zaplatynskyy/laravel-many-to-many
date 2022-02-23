@@ -14,7 +14,7 @@ class AddColumnForeignkeyInPostsTable extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->foreignId('category_id')->nullable()->onDelete('set null')->constrained();
+            $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');
         });
     }
 
@@ -26,7 +26,7 @@ class AddColumnForeignkeyInPostsTable extends Migration
     public function down()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
+            $table->dropForeign(['category_id']);
             $table->dropColumn('category_id');
         });
     }
